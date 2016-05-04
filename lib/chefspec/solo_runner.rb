@@ -120,7 +120,7 @@ module ChefSpec
       end
 
       # Allow stubbing/mocking after the cookbook has been compiled but before the converge
-      yield if block_given?
+      yield node if block_given?
 
       @converging = true
       converge_val = @client.converge(@run_context)
