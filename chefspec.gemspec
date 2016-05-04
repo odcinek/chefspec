@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'chef',    '>= 11.14'
   s.add_dependency 'fauxhai', '~> 3.2'
   s.add_dependency 'rspec',   '~> 3.0'
+  s.add_dependency 'diffy'
 
   # Development Dependencies
   s.add_development_dependency 'rake',      '< 12.0'
