@@ -1,3 +1,5 @@
+require 'diffy'
+
 module ChefSpec::Matchers
   class RenderFileMatcher
     attr_reader :expected_content
@@ -45,14 +47,10 @@ module ChefSpec::Matchers
     def failure_message
       message = %Q{expected Chef run to render "#{@path}"}
       if @expected_content
-        message << " matching:"
-        message << "\n\n"
-        message << expected_content_message
-        message << "\n\n"
-        message << "but got:"
-        message << "\n\n"
-        message << @actual_content.to_s
-        message << "\n "
+        message = ::Diffy::Diff.new(
+          expected_content_message,
+          @actual_content.to_s,
+        ).to_s(:color)
       end
       message
     end
