@@ -124,6 +124,16 @@ module ChefSpec
 
       @converging = true
       converge_val = @client.converge(@run_context)
+
+      if execute_block_resources?
+        resource_collection.all_resources.each do |resource|
+          if [Chef::Resource::WhyrunSafeRubyBlock,
+              Chef::Resource::RubyBlock].include?(resource.class)
+            resource.block.call
+          end
+        end
+      end
+
       if converge_val.is_a?(Exception)
         raise converge_val
       end
@@ -225,6 +235,10 @@ module ChefSpec
     def step_into?(resource)
       key = resource_name(resource)
       Array(options[:step_into]).map(&method(:resource_name)).include?(key)
+    end
+
+    def execute_block_resources?
+      Array(options[:execute_block_resources])
     end
 
     #
